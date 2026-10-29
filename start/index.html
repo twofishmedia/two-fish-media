@@ -110,7 +110,7 @@ footer .logo{color:var(--on-band)}
         <label for="i-org">Church or organization name<input type="text" id="i-org" name="organization" autocomplete="organization"></label>
         <label for="i-name">Your name<input type="text" id="i-name" name="contact_name" autocomplete="name"></label>
         <label for="i-email">Email<input type="text" id="i-email" name="email" inputmode="email" autocomplete="email"></label>
-        <label for="i-phone">Phone<input type="text" id="i-phone" name="phone" inputmode="tel" autocomplete="tel"></label>
+        <label for="i-phone">Phone<input type="text" id="i-phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="14" placeholder="(864) 555-0123"></label>
         <label for="i-role">Your role<input type="text" id="i-role" name="role" placeholder="Pastor, admin, volunteer"></label>
         <label for="i-plan">Plan you're interested in
           <select id="i-plan" name="plan"><option value="">Not sure yet</option><option>Essentials ($59/mo)</option><option>Care ($99/mo)</option><option>Stream ($139/mo)</option></select></label>
@@ -136,7 +136,7 @@ footer .logo{color:var(--on-band)}
       <label for="i-times">Service and gathering times <small>One per line, e.g. "Worship – Sundays 10:30 AM"</small><textarea id="i-times" name="service_times"></textarea></label>
       <label for="i-address">Street address<input type="text" id="i-address" name="address" autocomplete="street-address"></label>
       <div class="two">
-        <label for="i-ophone">Office phone for the website<input type="text" id="i-ophone" name="office_phone" inputmode="tel"></label>
+        <label for="i-ophone">Office phone for the website<input type="text" id="i-ophone" name="office_phone" inputmode="tel" maxlength="14" placeholder="(864) 555-0123"></label>
         <label for="i-oemail">Public email for the website<input type="text" id="i-oemail" name="office_email" inputmode="email"></label>
       </div>
     </fieldset>
@@ -215,5 +215,18 @@ form.addEventListener("submit", async e => {
 });
 </script>
 
+<script>
+/* Format phone numbers as (xxx) xxx-xxxx while typing */
+document.addEventListener("input", function (e) {
+  var el = e.target;
+  if (!el.matches || !el.matches('input[inputmode="tel"]')) return;
+  var atEnd = el.selectionStart === el.value.length;
+  var d = el.value.replace(/\D/g, "");
+  if (d.length === 11 && d.charAt(0) === "1") d = d.slice(1);
+  d = d.slice(0, 10);
+  var out = d.length === 0 ? "" : d.length < 4 ? "(" + d : d.length < 7 ? "(" + d.slice(0, 3) + ") " + d.slice(3) : "(" + d.slice(0, 3) + ") " + d.slice(3, 6) + "-" + d.slice(6);
+  if (out !== el.value) { el.value = out; if (atEnd) el.setSelectionRange(out.length, out.length); }
+});
+</script>
 </body>
 </html>
