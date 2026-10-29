@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Two Fish Website Checkup</title>
+<meta name="description" content="Free 3-minute checkup for church and nonprofit websites. See what first-time visitors experience and get a prioritized fix list.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: a welcoming single column, teal and gold two-fish brand; intake card → four short sections → a "visitor-ready" report with a ranked fix list */
+:root{
+  --bg:#F8F7F2; --surface:#FFFFFF; --ink:#16222A; --muted:#53606A; --line:#D9DFE2;
+  --accent:#1E5560; --accent-soft:#DDEBEC; --on-accent:#FFFFFF; --gold:#C99A1E; --gold-soft:#F5EBD2; --gold-ink:#6E5208; --band:#16222A; --on-band:#F3F5F4; --on-band-muted:#B9C6CB;
+  --bad:#B83A2E; --bad-soft:#F7E2DF; --warn:#9A6B0A; --warn-soft:#F6ECD6; --good:#2E7A4E; --good-soft:#DFF0E5;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F161A; --surface:#162026; --ink:#E8EEF0; --muted:#9EACB3; --line:#2A3840;
+  --accent:#7FC4CC; --accent-soft:#17303A; --on-accent:#0A171B; --gold:#E3B84A; --gold-soft:#33290F; --gold-ink:#F0CF7E; --band:#0A1013; --on-band:#E8EEF0; --on-band-muted:#9EACB3;
+  --bad:#F08B7F; --bad-soft:#3A1E1C; --warn:#E6BA62; --warn-soft:#352B16; --good:#7DCB99; --good-soft:#17301F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F161A; --surface:#162026; --ink:#E8EEF0; --muted:#9EACB3; --line:#2A3840;
+  --accent:#7FC4CC; --accent-soft:#17303A; --on-accent:#0A171B; --gold:#E3B84A; --gold-soft:#33290F; --gold-ink:#F0CF7E; --band:#0A1013; --on-band:#E8EEF0; --on-band-muted:#9EACB3;
+  --bad:#F08B7F; --bad-soft:#3A1E1C; --warn:#E6BA62; --warn-soft:#352B16; --good:#7DCB99; --good-soft:#17301F; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+[hidden]{display:none!important}
+.wrap{max-width:780px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.12;font-weight:800}
+h1{font-size:clamp(2.1rem,6vw,3.2rem);letter-spacing:-.01em}
+h2{font-size:1.55rem;font-weight:600}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.muted{color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--accent);color:var(--on-accent);border:0;border-radius:999px;padding:12px 24px;font-weight:700;font-size:1rem}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,.opt input:focus-visible+span,.chip input:focus-visible+span,a:focus-visible,input[type=text]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
+
+.hero{display:flex;flex-direction:column;gap:16px;padding-bottom:28px}
+.hero .lede{font-size:1.18rem;max-width:56ch}
+.door{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+.door svg{flex:none}
+.gets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin:8px 0 28px}
+.gets div{min-width:0;border-top:2px solid var(--accent);padding-top:12px}
+.gets b{display:block;font-weight:700;margin-bottom:4px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.95rem}
+input[type=text]{font:inherit;font-weight:400;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:600;font-size:.95rem;cursor:pointer}
+.chip input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend{font-weight:600;font-size:.95rem;margin-bottom:8px;padding:0}
+
+.progress{display:flex;gap:4px;margin:16px 0 6px}
+.progress i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.progress i.done{background:var(--accent)}
+.q{padding:20px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0}
+.q legend{font-size:1.08rem;margin-bottom:4px;line-height:1.4}
+.q .why{font-size:.92rem;color:var(--muted);margin-bottom:12px}
+.scale{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+@media (max-width:420px){.scale{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt span{display:block;border:1.5px solid var(--line);border-radius:8px;padding:10px 4px;cursor:pointer;text-align:center;font-weight:600;font-size:.92rem}
+.opt input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.navrow{display:flex;justify-content:space-between;gap:12px;margin-top:24px;flex-wrap:wrap}
+.hint{font-size:.92rem;color:var(--muted)}
+.err{color:var(--bad);font-size:.9rem;font-weight:600;min-height:1.3em}
+.fine{font-size:.85rem;color:var(--muted)}
+
+.rhead{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;padding-bottom:28px;border-bottom:2px solid var(--ink)}
+@media (max-width:560px){.rhead{grid-template-columns:1fr}}
+.grade{width:140px;height:140px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;border:10px solid var(--line)}
+.grade b{font-family:var(--display);font-size:3.4rem;line-height:1}
+.grade span{font-family:var(--mono);font-size:.8rem;color:var(--muted)}
+.pill{display:inline-block;font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.p-bad{background:var(--bad-soft);color:var(--bad)} .p-warn{background:var(--warn-soft);color:var(--warn)} .p-good{background:var(--good-soft);color:var(--good)}
+section.block{padding:30px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:16px}
+.areas{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.area{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.area .num{font-family:var(--mono);font-weight:600;font-size:1.6rem;font-variant-numeric:tabular-nums}
+.area .track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.area .track i{display:block;height:100%;border-radius:4px}
+.fix{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:16px 0;border-top:1px solid var(--line)}
+.fix:first-child{border-top:0}
+.fix .rank{font-family:var(--mono);font-weight:600;color:var(--muted);font-size:.9rem;padding-top:3px}
+.fix .body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fix .top{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
+.callout{background:var(--accent-soft);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.cta{background:var(--ink);color:var(--bg);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:14px}
+.cta h2{color:var(--bg)}
+.cta .btn{background:var(--bg);color:var(--ink)}
+.cta .btn.ghost{background:transparent;color:var(--bg);border-color:var(--bg)}
+.contact{font-family:var(--mono);font-size:.9rem;user-select:all}
+.samplenote{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:8px 12px;font-size:.9rem;font-weight:600}
+@media (prefers-reduced-motion:no-preference){.area .track i{transition:width .7s ease}}
+
+/* Site header and footer, shared with the Two Fish landing page */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.site-in{max-width:1080px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+nav.site .site-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:800;font-size:1.25rem}
+.links{display:flex;align-items:center;gap:24px}
+.links a{color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem}
+@media (max-width:720px){.links a.hide-sm{display:none}}
+footer.site{background:var(--band);color:var(--on-band-muted);padding-block:36px}
+footer.site .site-in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
+footer.site .logo{color:var(--on-band)}
+.cta .btn{background:var(--gold);color:#1B1505}
+.btn:focus-visible,.opt input:focus-visible+span,.chip input:focus-visible+span,a:focus-visible,input[type=text]:focus-visible{outline-color:var(--gold)}
+</style>
+</head>
+<body>
+
+
+<!-- Netlify reads this hidden form at deploy time to register the "checkup-leads" form. -->
+<form name="checkup-leads" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"><input name="name"><input name="email"><input name="phone"><input name="role">
+  <input name="organization"><input name="org_type"><input name="website"><input name="size">
+  <input name="score"><input name="grade"><input name="top_fixes"><textarea name="answers"></textarea>
+</form>
+
+<nav class="site" aria-label="Main"><div class="site-in">
+  <a class="logo" href="/"><svg width="30" height="30" viewBox="0 0 26 26" aria-hidden="true"><path d="M2 8c5-6 12-6 17 0-5 6-12 6-17 0zM19 8l5-4M19 8l5 4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 18c-5-6-12-6-17 0 5 6 12 6 17 0zM7 18l-5-4M7 18l-5 4" fill="var(--gold)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Two Fish Media</a>
+  <div class="links"><a class="hide-sm" href="/#why">Our story</a><a class="hide-sm" href="/#pricing">Pricing</a><a class="btn" href="/#contact" style="color:var(--on-accent);padding:10px 18px">Contact us</a></div>
+</div></nav>
+<div class="wrap" id="app"></div>
+<footer class="site"><div class="site-in">
+  <a class="logo" href="/"><svg width="24" height="24" viewBox="0 0 26 26" aria-hidden="true"><path d="M2 8c5-6 12-6 17 0-5 6-12 6-17 0zM19 8l5-4M19 8l5 4" fill="none" stroke="var(--on-band)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 18c-5-6-12-6-17 0 5 6 12 6 17 0zM7 18l-5-4M7 18l-5 4" fill="var(--gold)" stroke="var(--on-band)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Two Fish Media</a>
+  <span>A little goes a long way.</span>
+  <span>© 2026 Two Fish Media</span>
+</div></footer>
+
+
+<script>
+/* Edit these to brand the checkup. */
+const BRAND = {
+  name: "Two Fish Media",
+  tagline: "A little goes a long way.",
+  email: "hello@twofishmedia.com",
+  booking: ""                 // e.g. "https://calendly.com/yourname/20min"
+};
+
+const OPTS = [["yes","Yes"],["partly","Partly"],["no","No"],["unsure","Not sure"]];
+const PTS = {yes:2, partly:1, no:0, unsure:0};
+
+/* Each question can have church (c) and nonprofit (n) wording; t is shared. */
+const AREAS = [
+ {id:"first", name:"First impressions", qs:[
+  {t:"The site looks good and is easy to use on a phone.", why:"Most first visits now happen on a phone, often in the parking lot.",
+   fix:"Rebuild on a mobile-first layout so every page reads well on a small screen.", w:3},
+  {t:"Pages load in about 3 seconds or less on a phone.", why:"Visitors leave slow sites before they see anything.",
+   fix:"Compress large photos and move to fast, modern hosting.", w:2},
+  {c:"The homepage says who you are and who you're for in one sentence.", n:"The homepage states your mission and who you serve in one sentence.",
+   why:"A newcomer should know they're in the right place within seconds.",
+   fix:"Write one clear headline for the homepage and put it above everything else.", w:2}]},
+ {id:"find", name:"Finding the essentials", qs:[
+  {c:"Service times and address are visible on the homepage without scrolling.", n:"How to give, volunteer, or get help is visible on the homepage without scrolling.",
+   why:"This is the first thing most visitors are looking for.",
+   c_fix:"Put service times, address, and a map link at the top of the homepage.", n_fix:"Add three clear buttons at the top of the homepage: Give, Volunteer, Get Help.", w:3},
+  {c:"There's a 'Plan Your Visit' page covering parking, kids, and what to expect.", n:"There's a clear page for the people you serve: who qualifies and how to get help.",
+   why:"Uncertainty is the biggest reason people don't take the first step.",
+   c_fix:"Create a Plan Your Visit page with parking, kids check-in, what to wear, and a short welcome video or photo.", n_fix:"Create a Get Help page that explains who qualifies, what to bring, and how to start.", w:3},
+  {t:"Contact info and a simple contact form are easy to find from every page.", why:"If people can't ask a question, many won't come at all.",
+   fix:"Add contact details to the footer and a short form to a Contact page.", w:2}]},
+ {id:"engage", name:"Giving & engagement", qs:[
+  {c:"Online giving takes three clicks or fewer from the homepage.", n:"Donating online takes three clicks or fewer from the homepage.",
+   why:"Every extra step loses givers.",
+   fix:"Add a Give button to the header that goes straight to a simple giving page.", w:3},
+  {t:"Upcoming events are current, with nothing past-dated still showing.", why:"Old events make a site look abandoned.",
+   fix:"Set up an events list that hides past events automatically.", w:2},
+  {c:"Sermons or messages are easy to find and play.", n:"Your impact is shown with real stories, photos, or numbers.",
+   why:"This is what convinces a visitor to come back or get involved.",
+   c_fix:"Add a Messages page with the latest sermon at the top and simple series browsing.", n_fix:"Add an Impact section with two or three short stories and your key numbers from the past year.", w:2},
+  {t:"People can sign up to volunteer, join a group, or register for events online.", why:"Paper sign-ups miss everyone who isn't in the room.",
+   fix:"Add simple online sign-up forms that send responses to a staff inbox.", w:1}]},
+ {id:"care", name:"Upkeep & reach", qs:[
+  {t:"Someone on your team can update the site in under 10 minutes without help.", why:"If updates are hard, the site goes stale.",
+   fix:"Move to a site your team can edit easily, or a care plan where updates are handled for you.", w:2},
+  {t:"You show up near the top of Google when someone searches your name and town.", why:"That search is how most newcomers find you.",
+   fix:"Set up and verify your Google Business Profile and add your town to page titles.", w:2},
+  {t:"The site shows the secure padlock (https), and the domain is owned in your organization's name.", why:"Browsers warn visitors away from insecure sites, and a lost domain is hard to get back.",
+   fix:"Turn on https and move domain ownership into the organization's own account.", w:1}]}
+];
+
+const SAMPLE = {intake:{org:"Grace Fellowship (sample)", type:"church", url:"gracefellowship.example", size:"100–300"},
+  ans:{first:["partly","no","no"], find:["no","no","partly"], engage:["partly","no","yes","no"], care:["no","partly","yes"]}};
+
+let state = {view:"intro", step:0, intake:{org:"",type:"church",url:"",size:""}, ans:{}, sample:false,
+  contact:{name:"",email:"",phone:"",role:""}, submitted:false};
+const blankAnswers = ()=>AREAS.forEach(a=>state.ans[a.id]=a.qs.map(()=>""));
+blankAnswers();
+
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+const isNP = ()=>state.intake.type==="nonprofit";
+const qText = q => q.t || (isNP()?q.n:q.c);
+const qFix = q => q.fix || (isNP()?q.n_fix:q.c_fix);
+const visitor = ()=>isNP()?"supporter":"first-time guest";
+const band = s => s<50?"bad":s<75?"warn":"good";
+const label = s => s<50?"Needs work":s<75?"Getting there":"Strong";
+const letter = s => s>=90?"A":s>=75?"B":s>=60?"C":s>=45?"D":"F";
+
+function render(){
+  if(state.view==="intro") return renderIntro();
+  if(state.view==="q") return renderQ();
+  if(state.view==="gate") return renderGate();
+  return renderReport();
+}
+
+function doorIcon(){
+  return `<svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M2 8c5-6 12-6 17 0-5 6-12 6-17 0zM19 8l5-4M19 8l5 4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 18c-5-6-12-6-17 0 5 6 12 6 17 0zM7 18l-5-4M7 18l-5 4" fill="var(--gold)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function renderIntro(){
+  const i = state.intake;
+  const sizes = ["Under 100","100–300","300–1,000","1,000+"];
+  app.innerHTML = `
+  <header class="hero">
+    <span class="eyebrow">Free 3-minute website checkup · churches & nonprofits</span>
+    <h1>Is your website welcoming the people you're trying to reach?</h1>
+    <p class="lede">Answer 13 quick questions about your site. You'll get a grade, a picture of what a first-time visitor experiences, and a ranked list of fixes, starting with the ones that matter most.</p>
+  </header>
+  <div class="gets">
+    <div><b>A simple grade</b><span class="muted">See where your site stands in four areas.</span></div>
+    <div><b>A ranked fix list</b><span class="muted">Do the most important fixes first.</span></div>
+    <div><b>No tech skills needed</b><span class="muted">Just answer what you see on your own site.</span></div>
+  </div>
+  <form class="panel stack" id="intake" novalidate>
+    <h3>About your organization</h3>
+    <fieldset><legend>We are a…</legend><div class="chips">
+      <label class="chip"><input type="radio" name="type" id="type-church" value="church" ${i.type==="church"?"checked":""}><span>Church</span></label>
+      <label class="chip"><input type="radio" name="type" id="type-np" value="nonprofit" ${i.type==="nonprofit"?"checked":""}><span>Nonprofit</span></label>
+    </div></fieldset>
+    <div class="grid2">
+      <label class="f" for="org">Organization name
+        <input type="text" id="org" value="${esc(i.org)}" autocomplete="organization"></label>
+      <label class="f" for="url">Website address
+        <input type="text" id="url" value="${esc(i.url)}" inputmode="url" placeholder="yourchurch.org"></label>
+    </div>
+    <fieldset><legend id="size-legend">${i.type==="nonprofit"?"People served each month":"Weekly attendance"}</legend><div class="chips">
+      ${sizes.map((s,k)=>`<label class="chip"><input type="radio" name="size" id="size-${k}" value="${s}" ${i.size===s?"checked":""}><span>${s}</span></label>`).join("")}
+    </div></fieldset>
+    <div class="row">
+      <button class="btn" type="submit" id="start">Start the checkup</button>
+      <button class="btn ghost" type="button" id="sample">See a sample report</button>
+    </div>
+  </form>`;
+  const f = document.getElementById("intake");
+  f.addEventListener("change",e=>{
+    if(e.target.name==="type") document.getElementById("size-legend").textContent = e.target.value==="nonprofit"?"People served each month":"Weekly attendance";
+  });
+  f.addEventListener("submit",e=>{
+    e.preventDefault();
+    state.intake.org = document.getElementById("org").value.trim();
+    state.intake.url = document.getElementById("url").value.trim();
+    state.intake.type = (f.querySelector('input[name="type"]:checked')||{}).value || "church";
+    state.intake.size = (f.querySelector('input[name="size"]:checked')||{}).value || "";
+    state.sample=false; state.view="q"; state.step=0; render(); window.scrollTo(0,0);
+  });
+  document.getElementById("sample").addEventListener("click",()=>{
+    state.intake = {...SAMPLE.intake};
+    Object.keys(SAMPLE.ans).forEach(k=>state.ans[k]=[...SAMPLE.ans[k]]);
+    state.sample=true; state.view="report"; render(); window.scrollTo(0,0);
+  });
+}
+
+function renderQ(){
+  const a = AREAS[state.step], ans = state.ans[a.id];
+  app.innerHTML = `
+  <span class="eyebrow">Part ${state.step+1} of ${AREAS.length}</span>
+  <div class="progress" aria-hidden="true">${AREAS.map((_,k)=>`<i class="${k<=state.step?"done":""}"></i>`).join("")}</div>
+  <h2 style="margin-top:14px">${esc(a.name)}</h2>
+  <p class="hint" style="margin-top:6px">Pull up your website on your phone and answer based on what you see.</p>
+  <form id="qf" style="margin-top:8px" novalidate>
+    ${a.qs.map((q,k)=>`<fieldset class="q"><legend>${esc(qText(q))}</legend><p class="why">${esc(q.why)}</p>
+      <div class="scale">${OPTS.map(([v,l])=>`<label class="opt"><input type="radio" name="q${k}" id="${a.id}-${k}-${v}" value="${v}" ${ans[k]===v?"checked":""}><span>${l}</span></label>`).join("")}</div></fieldset>`).join("")}
+    <div class="navrow">
+      <button type="button" class="btn ghost" id="back">${state.step===0?"Back to start":"Previous"}</button>
+      <button type="submit" class="btn" id="next" ${ans.includes("")?"disabled":""}>${state.step===AREAS.length-1?"See my results":"Next"}</button>
+    </div>
+  </form>`;
+  const f = document.getElementById("qf"), next = document.getElementById("next");
+  f.addEventListener("change",e=>{ ans[+e.target.name.slice(1)] = e.target.value; next.disabled = ans.includes(""); });
+  f.addEventListener("submit",e=>{
+    e.preventDefault(); if(ans.includes("")) return;
+    if(state.step<AREAS.length-1) state.step++; else state.view="gate";
+    render(); window.scrollTo(0,0);
+  });
+  document.getElementById("back").addEventListener("click",()=>{
+    if(state.step===0) state.view="intro"; else state.step--; render(); window.scrollTo(0,0);
+  });
+}
+
+function renderGate(){
+  const c = state.contact;
+  app.innerHTML = `
+  <span class="eyebrow">Almost done</span>
+  <div class="progress" aria-hidden="true">${AREAS.map(()=>`<i class="done"></i>`).join("")}</div>
+  <h2 style="margin-top:14px">Your results are ready</h2>
+  <p class="hint" style="margin-top:6px">Tell us where to reach you and your full report opens on the next screen.</p>
+  <form class="panel stack" id="gf" style="margin-top:20px" novalidate>
+    <div class="grid2">
+      <label class="f" for="lead-name">Your name
+        <input type="text" id="lead-name" autocomplete="name" value="${esc(c.name)}"></label>
+      <label class="f" for="lead-email">Email
+        <input type="text" id="lead-email" inputmode="email" autocomplete="email" value="${esc(c.email)}"></label>
+      <label class="f" for="lead-role">Your role
+        <input type="text" id="lead-role" value="${esc(c.role)}" placeholder="${isNP()?"Executive director":"Pastor, admin, volunteer"}"></label>
+      <label class="f" for="lead-phone">Phone (optional)
+        <input type="text" id="lead-phone" inputmode="tel" autocomplete="tel" value="${esc(c.phone)}"></label>
+    </div>
+    <p class="err" id="gerr" aria-live="polite"></p>
+    <div class="navrow" style="margin-top:0">
+      <button type="button" class="btn ghost" id="gback">Previous</button>
+      <button type="submit" class="btn" id="gsend">Show my report</button>
+    </div>
+    <p class="fine">We'll send you a copy and may follow up once. No spam, and your information is never sold.</p>
+  </form>`;
+  document.getElementById("gback").addEventListener("click",()=>{state.view="q"; state.step=AREAS.length-1; render();});
+  document.getElementById("gf").addEventListener("submit", async e=>{
+    e.preventDefault();
+    const name = document.getElementById("lead-name").value.trim();
+    const email = document.getElementById("lead-email").value.trim();
+    const err = document.getElementById("gerr");
+    if(!name){err.textContent="Enter your name to see your report."; return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent="Enter a valid email address, like you@yourchurch.org."; return;}
+    state.contact = {name, email, phone:document.getElementById("lead-phone").value.trim(), role:document.getElementById("lead-role").value.trim()};
+    const btn = document.getElementById("gsend"); btn.disabled = true; btn.textContent = "Preparing your report…";
+    try { await sendLead(); state.submitted = true; } catch(x) { state.submitted = false; }
+    state.view = "report"; render(); window.scrollTo(0,0);
+  });
+}
+
+function analyze(){
+  const areas = AREAS.map(a=>{
+    const ans = state.ans[a.id];
+    const got = a.qs.reduce((t,q,k)=>t+PTS[ans[k]]*q.w,0), max = a.qs.reduce((t,q)=>t+2*q.w,0);
+    return {...a, ans, s:Math.round(got/max*100)};
+  });
+  let got=0,max=0;
+  areas.forEach(a=>a.qs.forEach((q,k)=>{got+=PTS[a.ans[k]]*q.w; max+=2*q.w;}));
+  const score = Math.round(got/max*100);
+  const order = {no:0, unsure:1, partly:2};
+  const fixes = areas.flatMap(a=>a.qs.map((q,k)=>({area:a.name, q, v:a.ans[k]})))
+    .filter(x=>x.v!=="yes")
+    .sort((x,y)=>(y.q.w-x.q.w) || (order[x.v]-order[y.v]));
+  return {areas, score, fixes};
+}
+
+async function sendLead(){
+  const {score, fixes, areas} = analyze();
+  const fields = {
+    "form-name":"checkup-leads","bot-field":"",
+    name:state.contact.name, email:state.contact.email, phone:state.contact.phone, role:state.contact.role,
+    organization:state.intake.org, org_type:state.intake.type, website:state.intake.url, size:state.intake.size,
+    score:String(score), grade:letter(score),
+    top_fixes:fixes.slice(0,3).map(f=>qFix(f.q)).join(" | "),
+    answers:areas.map(a=>`${a.name}: ${a.qs.map((q,k)=>`${qText(q)} = ${a.ans[k]}`).join("; ")}`).join("\n")
+  };
+  const res = await fetch("/", {method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body:new URLSearchParams(fields).toString()});
+  if(!res.ok) throw new Error("submit failed");
+}
+
+function story(areas){
+  const g = id => areas.find(a=>a.id===id).s;
+  const parts = [];
+  parts.push(g("first")<50 ? `A ${visitor()} opening your site on their phone may struggle to read it or wait too long for it to load.`
+                           : `A ${visitor()} opening your site on their phone gets a reasonably good first impression.`);
+  parts.push(g("find")<50 ? (isNP()?"They'll have to hunt for how to give, volunteer, or get help, and many will give up.":"They'll have to hunt for when and where to show up, and many will give up before Sunday.")
+                          : (isNP()?"They can find how to get involved without much effort.":"They can find when and where to show up without much effort."));
+  parts.push(g("engage")<50 ? "If they do want to give or get involved, the next step isn't easy to take online."
+                            : "When they're ready to give or get involved, the next step is clear.");
+  return parts.join(" ");
+}
+
+function renderReport(){
+  const {areas, score, fixes} = analyze();
+  const who = state.intake.org ? esc(state.intake.org) : (isNP()?"Your nonprofit":"Your church");
+  const b = band(score);
+  const head = score>=75?"Your site is welcoming visitors well":score>=50?"Your site has a good start, with clear gaps":"Your site may be turning visitors away";
+  const top = fixes.slice(0,8);
+
+  app.innerHTML = `
+  ${state.sample?`<p class="samplenote" style="margin-bottom:18px">This is a sample report with example answers. Take the checkup to see your own.</p>`:""}
+  <header class="rhead">
+    <div class="grade" style="border-color:var(--${b})" role="img" aria-label="Grade ${letter(score)}, score ${score} out of 100"><b style="color:var(--${b})">${letter(score)}</b><span>${score} / 100</span></div>
+    <div class="stack" style="gap:10px;min-width:0">
+      <span class="eyebrow">Two Fish Website Checkup · ${who}</span>
+      <h1 style="font-size:clamp(1.9rem,5vw,2.6rem)">${head}</h1>
+      ${state.intake.url?`<p class="muted" style="font-family:var(--mono);font-size:.88rem;word-break:break-all">${esc(state.intake.url)}</p>`:""}
+    </div>
+  </header>
+
+  <section class="block">
+    <h2>What a ${visitor()} experiences</h2>
+    <p>${story(areas)}</p>
+  </section>
+
+  <section class="block">
+    <h2>Scores by area</h2>
+    <div class="areas">${areas.map(a=>`<div class="area"><span class="muted" style="font-weight:600">${esc(a.name)}</span>
+      <span class="num">${a.s}</span><div class="track"><i style="width:${Math.max(a.s,3)}%;background:var(--${band(a.s)})"></i></div>
+      <span><span class="pill p-${band(a.s)}">${label(a.s)}</span></span></div>`).join("")}</div>
+  </section>
+
+  <section class="block">
+    <h2>${top.length?"Your fix list, most important first":"No fixes needed"}</h2>
+    ${top.length?`<p class="muted">Ranked by how much each item affects a ${visitor()}. "Not sure" items are worth checking first, since they're often quick wins.</p>
+    <div>${top.map((f,k)=>`<div class="fix"><span class="rank">${String(k+1).padStart(2,"0")}</span><div class="body">
+      <div class="top"><b>${esc(qFix(f.q))}</b></div>
+      <span class="muted" style="font-size:.92rem">${esc(f.area)} · You answered: ${OPTS.find(o=>o[0]===f.v)[1]}</span></div></div>`).join("")}</div>
+    ${fixes.length>top.length?`<p class="muted">Plus ${fixes.length-top.length} smaller item${fixes.length-top.length>1?"s":""}.</p>`:""}`
+    :`<p>Your site checks every box. Keep events and content fresh, and review it again in six months.</p>`}
+  </section>
+
+  ${isNP()?`<section class="block"><div class="callout">
+    <h3>Free advertising you may be missing</h3>
+    <p>Google Ad Grants gives eligible nonprofits up to $10,000 a month in free search ads. A clear, fast website is one of the requirements, and we can help you apply.</p></div></section>`:""}
+
+  <section class="block" style="border-bottom:0">
+    <div class="cta">
+      <span class="eyebrow" style="color:var(--bg);opacity:.75">${esc(BRAND.name)}</span>
+      <h2>A little goes a long way.</h2>
+      <p>Every item on this list can be fixed. Two Fish Media builds simple, welcoming websites for ${isNP()?"nonprofits":"churches"}: live in two to three weeks, easy for your team to update, with hosting and updates handled for one flat monthly fee. ${state.submitted?"We have a copy of your results and will reach out with a few ideas.":"Book a free 20-minute call and we'll walk through your results together."}</p>
+      ${BRAND.email?`<p class="contact">${esc(BRAND.email)}</p>`:""}
+      <div class="row">
+        <a class="btn" href="/#contact">Request a free call</a><a class="btn ghost" href="/#pricing">See pricing</a>
+        <button class="btn ghost" id="retake" type="button">${state.sample?"Take the checkup":"Start over"}</button>
+      </div>
+    </div>
+  </section>`;
+  document.getElementById("retake").addEventListener("click",()=>{
+    blankAnswers();
+    if(state.sample) state.intake={org:"",type:"church",url:"",size:""};
+    state.sample=false; state.submitted=false; state.view="intro"; state.step=0; render(); window.scrollTo(0,0);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>

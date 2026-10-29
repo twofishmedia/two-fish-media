@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Two Fish Media</title>
+<meta name="description" content="Simple, welcoming websites for small churches and nonprofits. God only asks for what you have. He does the multiplying.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=Figtree:wght@400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: full-width bands, each with a centered 1080px inner column; hero with a loaves-and-fishes tally, story, offer, pricing, FAQ, contact */
+:root{
+  --bg:#F8F7F2; --surface:#FFFFFF; --ink:#16222A; --muted:#53606A; --line:#D9DFE2;
+  --accent:#1E5560; --accent-soft:#DDEBEC; --on-accent:#FFFFFF; --gold:#C99A1E; --gold-soft:#F5EBD2; --gold-ink:#6E5208;
+  --band:#16222A; --on-band:#F3F5F4; --on-band-muted:#B9C6CB;
+  --bad:#B83A2E;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Figtree", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F161A; --surface:#162026; --ink:#E8EEF0; --muted:#9EACB3; --line:#2A3840;
+  --accent:#7FC4CC; --accent-soft:#17303A; --on-accent:#0A171B; --gold:#E3B84A; --gold-soft:#33290F; --gold-ink:#F0CF7E;
+  --band:#0A1013; --on-band:#E8EEF0; --on-band-muted:#9EACB3; --bad:#F08B7F; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F161A; --surface:#162026; --ink:#E8EEF0; --muted:#9EACB3; --line:#2A3840;
+  --accent:#7FC4CC; --accent-soft:#17303A; --on-accent:#0A171B; --gold:#E3B84A; --gold-soft:#33290F; --gold-ink:#F0CF7E;
+  --band:#0A1013; --on-band:#E8EEF0; --on-band-muted:#9EACB3; --bad:#F08B7F; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+[hidden]{display:none!important}
+.in{max-width:1080px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1.1;text-wrap:balance}
+h1{font-size:clamp(2.4rem,6.4vw,4.4rem);font-weight:800;letter-spacing:-.015em}
+h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:600}
+p{margin:0;text-wrap:pretty}
+.eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.muted{color:var(--muted)}
+.lede{font-size:1.2rem;max-width:56ch}
+a{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--on-accent);border:0;border-radius:999px;padding:14px 26px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.gold{background:var(--gold);color:#1B1505}
+.btn:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+section{padding-block:80px}
+@media (max-width:640px){section{padding-block:56px}}
+
+/* Nav */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:800;font-size:1.25rem}
+.links{display:flex;align-items:center;gap:24px}
+.links a{color:var(--ink);text-decoration:none;font-weight:600;font-size:.95rem}
+.links a.btn{color:var(--on-accent);padding:10px 18px}
+@media (max-width:720px){.links a:not(.btn){display:none}}
+
+/* Hero */
+.hero{padding-block:72px 88px}
+.hero .in{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:56px;align-items:center}
+@media (max-width:860px){.hero .in{grid-template-columns:1fr;gap:40px}}
+.hero .copy{display:flex;flex-direction:column;gap:22px;min-width:0}
+.hero h1 em{font-style:italic;font-weight:600;color:var(--accent)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.tally{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.tally svg{width:100%;height:auto;display:block}
+.sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center;border-top:1px solid var(--line);padding-top:16px}
+.sum b{display:block;font-family:var(--display);font-size:2rem;line-height:1;font-variant-numeric:tabular-nums}
+.sum span{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sum .big b{color:var(--gold-ink)}
+.cite{font-size:.92rem;color:var(--muted);font-style:italic}
+
+/* Story bands */
+.story{background:var(--band);color:var(--on-band)}
+.story .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:start}
+@media (max-width:860px){.story .in{grid-template-columns:1fr;gap:28px}}
+.story .eyebrow{color:var(--gold)}
+.story p{color:var(--on-band-muted);font-size:1.08rem}
+.story p + p{margin-top:16px}
+.story h2{color:var(--on-band)}
+.verse{font-family:var(--display);font-style:italic;font-size:1.3rem;line-height:1.45;color:var(--on-band);border-top:2px solid var(--gold);padding-top:18px;margin-top:28px}
+.verse small{display:block;font-family:var(--mono);font-style:normal;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:10px}
+
+.serve .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:56px;align-items:center}
+@media (max-width:860px){.serve .in{grid-template-columns:1fr;gap:32px}}
+.serve .copy{display:flex;flex-direction:column;gap:18px;min-width:0}
+.know{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:8px 24px;min-width:0}
+.know div{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:16px 0;border-top:1px solid var(--line)}
+.know div:first-child{border-top:0}
+.know svg{margin-top:3px}
+
+/* Includes */
+.head{display:flex;flex-direction:column;gap:12px;margin-bottom:36px;max-width:720px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 32px}
+@media (max-width:860px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.grid3{grid-template-columns:1fr}}
+.feat{display:flex;flex-direction:column;gap:6px;border-top:2px solid var(--accent);padding-top:14px;min-width:0}
+.alt{background:var(--surface);border-block:1px solid var(--line)}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;counter-reset:s}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+.step{display:flex;flex-direction:column;gap:8px;padding:24px;border-radius:16px;background:var(--accent-soft);min-width:0}
+.step .n{font-family:var(--mono);font-weight:600;color:var(--accent);font-size:.85rem;letter-spacing:.08em}
+
+/* Pricing */
+.prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+@media (max-width:860px){.prices{grid-template-columns:1fr}}
+.price{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1.5px solid var(--line);border-radius:18px;padding:26px;min-width:0}
+.price.pick{border:2px solid var(--accent)}
+.price .amt{font-family:var(--display);font-weight:800;font-size:2.8rem;line-height:1;font-variant-numeric:tabular-nums}
+.price .amt small{font-size:1rem;font-weight:600;color:var(--muted)}
+.price ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:var(--muted)}
+.tag{align-self:flex-start;font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.setupline{margin-top:20px;padding:18px 22px;border:1.5px dashed var(--line);border-radius:14px}
+.founding{margin-top:14px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;background:var(--gold-soft);color:var(--gold-ink);border-radius:18px;padding:22px 26px}
+.founding b{font-family:var(--display);font-size:1.25rem}
+.founding p{color:var(--gold-ink)}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;max-width:780px}
+details{border-top:1px solid var(--line);padding:18px 0}
+details:last-child{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:700;font-size:1.06rem;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--mono);color:var(--accent);font-size:1.2rem;line-height:1}
+details[open] summary::after{content:"−"}
+details p{margin-top:10px;color:var(--muted);max-width:65ch}
+
+/* Contact */
+.contact .in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:56px;align-items:start}
+@media (max-width:860px){.contact .in{grid-template-columns:1fr;gap:32px}}
+form.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:520px){.two{grid-template-columns:1fr}}
+label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.95rem}
+input[type=text],textarea{font:inherit;font-weight:400;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
+textarea{min-height:110px;resize:vertical}
+.msg{font-size:.95rem;font-weight:600;min-height:1.4em}
+.msg.err{color:var(--bad)} .msg.ok{color:var(--accent)}
+.hp{position:absolute;left:-9999px}
+
+footer{background:var(--band);color:var(--on-band-muted);padding-block:36px}
+footer .in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}
+footer .logo{color:var(--on-band)}
+footer a{color:var(--on-band-muted)}
+</style>
+</head>
+<body>
+
+
+<nav aria-label="Main">
+  <div class="in">
+    <a class="logo" href="#top" aria-label="Two Fish Media home">
+      <svg width="30" height="30" viewBox="0 0 26 26" aria-hidden="true"><path d="M2 8c5-6 12-6 17 0-5 6-12 6-17 0zM19 8l5-4M19 8l5 4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 18c-5-6-12-6-17 0 5 6 12 6 17 0zM7 18l-5-4M7 18l-5 4" fill="var(--gold)" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Two Fish Media
+    </a>
+    <div class="links">
+      <a href="#why">Our story</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn" href="/checkup/">Free checkup</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+  <section class="hero">
+    <div class="in">
+      <div class="copy">
+        <span class="eyebrow">Websites for small churches &amp; nonprofits</span>
+        <h1>God only asks for what you have. <em>He does the multiplying.</em></h1>
+        <p class="lede">No matter how small it seems. A boy brought five loaves and two fish, and Jesus fed a crowd of thousands. Your church doesn't need a big budget to reach your community. It needs a website that welcomes people before they ever walk through the door.</p>
+        <div class="row">
+          <a class="btn" href="/checkup/">Take the free website checkup</a>
+          <a class="btn ghost" href="#pricing">See pricing</a>
+        </div>
+        <p class="muted" style="font-size:.95rem">Setup from $399. Hosting and updates from $59 a month.</p>
+      </div>
+      <div class="tally" aria-label="Five loaves plus two fish fed about five thousand">
+        <svg viewBox="0 0 320 150" role="img" aria-label="Five loaves and two fish">
+          <g fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2.5">
+            <ellipse cx="34" cy="44" rx="26" ry="16"/><ellipse cx="94" cy="44" rx="26" ry="16"/><ellipse cx="154" cy="44" rx="26" ry="16"/>
+            <ellipse cx="64" cy="86" rx="26" ry="16"/><ellipse cx="124" cy="86" rx="26" ry="16"/>
+          </g>
+          <g fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round">
+            <path d="M22 40q12-6 24 0M82 40q12-6 24 0M142 40q12-6 24 0M52 82q12-6 24 0M112 82q12-6 24 0"/>
+          </g>
+          <g stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M206 50c14-17 36-17 50 0-14 17-36 17-50 0z" fill="var(--accent-soft)"/><path d="M256 50l14-11M256 50l14 11" fill="none"/>
+            <path d="M306 96c-14-17-36-17-50 0 14 17 36 17 50 0z" fill="var(--gold-soft)"/><path d="M256 96l-14-11M256 96l-14 11" fill="none"/>
+          </g>
+          <circle cx="221" cy="47" r="2.5" fill="var(--accent)"/><circle cx="291" cy="93" r="2.5" fill="var(--accent)"/>
+          <text x="160" y="140" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1.5" fill="var(--muted)">A BOY'S LUNCH</text>
+        </svg>
+        <div class="sum">
+          <div><b>5</b><span>loaves</span></div>
+          <div><b>2</b><span>fish</span></div>
+          <div class="big"><b>5,000+</b><span>fed</span></div>
+        </div>
+        <p class="cite">John 6:1–14</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="story" id="why">
+    <div class="in">
+      <div>
+        <span class="eyebrow">Why "Two Fish"</span>
+        <h2 style="margin-top:12px">Small was never a problem for God.</h2>
+        <p class="verse">"There's a boy here who has five barley loaves and two fish—but what are they for so many?"<small>John 6:9 (HCSB)</small></p>
+      </div>
+      <div>
+        <p>The disciples looked at that lunch and saw how little it was. Jesus looked at it and saw what it could become.</p>
+        <p>We think about small churches the same way. A congregation of 80 can change a town. A food pantry run by volunteers can feed a whole county. What's usually missing isn't heart. It's a front door online that's clear, welcoming, and easy to find.</p>
+        <p>That's what we build. You bring what you have, and we help bring it to life. God takes it further than any of us could.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="serve">
+    <div class="in">
+      <div class="copy">
+        <span class="eyebrow">Who we are</span>
+        <h2>We love small churches because we serve in one too.</h2>
+        <p class="lede">We aren't an agency that found churches in a market report. We're in a small church every Sunday, doing the same jobs you are. That's why we build sites that are simple to run and kind to your budget.</p>
+      </div>
+      <div class="know" aria-label="What we understand">
+        <div><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><path d="M6.5 11.5l3 3 6-7" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><p><b>The website is usually a volunteer's side job.</b> So you just send us the change, and we handle it.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><path d="M6.5 11.5l3 3 6-7" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><p><b>Every dollar is a tithe or a gift.</b> So our pricing is flat, small, and clear, with no long contracts.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><path d="M6.5 11.5l3 3 6-7" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><p><b>First-time guests check your site before they visit.</b> So we start with service times, directions, and what to expect.</p></div>
+        <div><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><path d="M6.5 11.5l3 3 6-7" fill="none" stroke="var(--accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg><p><b>Ministry is the point, not the website.</b> So we keep the tech out of your way.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="in">
+      <div class="head">
+        <span class="eyebrow">Every site includes</span>
+        <h2>Everything a visitor needs, nothing you have to babysit.</h2>
+      </div>
+      <div class="grid3">
+        <div class="feat"><h3>Mobile-first design</h3><p class="muted">Most first visits happen on a phone. Your site reads beautifully on any screen.</p></div>
+        <div class="feat"><h3>Plan Your Visit page</h3><p class="muted">Parking, kids, what to wear, what to expect. Nonprofits get a clear Get Help page.</p></div>
+        <div class="feat"><h3>Simple online giving</h3><p class="muted">One Give button, three clicks or fewer, connected to the giving platform you already use.</p></div>
+        <div class="feat"><h3>Sermons &amp; events</h3><p class="muted">Messages are easy to find, and past events drop off automatically.</p></div>
+        <div class="feat"><h3>Found on Google</h3><p class="muted">We set up your Google Business Profile so people searching nearby find you.</p></div>
+        <div class="feat"><h3>Secure and yours</h3><p class="muted">Fast hosting, https, backups, and a domain registered in your organization's name.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="in">
+      <div class="head">
+        <span class="eyebrow">How it works</span>
+        <h2>Live in two to three weeks.</h2>
+      </div>
+      <div class="steps">
+        <div class="step"><span class="n">STEP 1</span><h3>A free 20-minute call</h3><p class="muted">We look at your current site together and talk about who you're trying to reach.</p></div>
+        <div class="step"><span class="n">STEP 2</span><h3>We build it</h3><p class="muted">We write, design, and launch your new site. You review it before it goes live.</p></div>
+        <div class="step"><span class="n">STEP 3</span><h3>We keep it fresh</h3><p class="muted">Hosting, security, and updates are handled every month, so it never goes stale.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" id="pricing">
+    <div class="in">
+      <div class="head">
+        <span class="eyebrow">Simple pricing</span>
+        <h2>Small, flat, and clear.</h2>
+        <p class="muted">Pick the plan that fits. No long-term contracts, and the domain always stays yours.</p>
+      </div>
+      <div class="prices">
+        <div class="price">
+          <h3>Essentials</h3>
+          <span class="amt">$59 <small>/ month</small></span>
+          <ul><li>Fast, secure hosting</li><li>Backups and updates</li><li>Up to 4 small edits a month</li></ul>
+        </div>
+        <div class="price pick">
+          <span class="tag">Most popular</span>
+          <h3>Care</h3>
+          <span class="amt">$99 <small>/ month</small></span>
+          <ul><li>Everything in Essentials</li><li>Weekly sermon and event posting</li><li>Quarterly check-in call</li></ul>
+        </div>
+        <div class="price">
+          <span class="tag">Already streaming?</span>
+          <h3>Stream</h3>
+          <span class="amt">$139 <small>/ month</small></span>
+          <ul><li>Everything in Care</li><li>Watch Live page with your YouTube or Facebook stream</li><li>Each week's replay posted with title and thumbnail</li></ul>
+        </div>
+      </div>
+      <div class="setupline">
+        <div><b>Website setup: $399 one time.</b> <span class="muted">Design, build, content moved from your current site, Google Business Profile, and launch.</span></div>
+      </div>
+      <div class="founding">
+        <div><b>30-day happiness guarantee</b><p>If you're not happy with your new site in the first 30 days, we'll refund your setup fee. No long-term contracts, ever.</p></div>
+        <a class="btn gold" href="#contact">Get started</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="in">
+      <div class="head"><span class="eyebrow">Questions</span><h2>Good questions we hear a lot.</h2></div>
+      <div class="faq">
+        <details><summary>Do you only work with churches?</summary><p>No. We serve small churches and small nonprofits: food pantries, ministries, community organizations, and similar groups. Nonprofits also get help applying for Google Ad Grants, which offers eligible organizations up to $10,000 a month in free search ads.</p></details>
+        <details><summary>Who owns the website and domain?</summary><p>You do. The domain is registered in your organization's name, and if you ever leave, we hand everything over.</p></details>
+        <details><summary>Is there a contract?</summary><p>No long-term contract. The monthly plans are month to month.</p></details>
+        <details><summary>We already have a website. Can you work with it?</summary><p>Yes. We move your existing content, photos, and sermons to the new site so nothing gets lost.</p></details>
+        <details><summary>How do updates work?</summary><p>Just email or text us what you need: new service times, an event, this week's sermon. We'll update it, usually within one business day. There are no logins or software for your team to learn.</p></details>
+        <details><summary>Can you help with our livestream?</summary><p>If you already stream on YouTube or Facebook, the Stream plan puts it on your website with a Watch Live page and posts each week's replay for you. To stream worship music, your church will also need a CCLI Streaming License.</p></details>
+        <details><summary>Are there any other costs?</summary><p>Two small ones, paid directly by you, not through us. Your domain name (usually about $10–20 a year) is registered in your organization's name and billed by the registrar. Online giving fees are charged by your giving provider on each gift. We connect the platform you already use at no extra charge, and everything else is included in your plan.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt contact" id="contact">
+    <div class="in">
+      <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+        <span class="eyebrow">Get in touch</span>
+        <h2>Bring what you have. We'll help bring it to life.</h2>
+        <p class="muted">Tell us a little about your church or nonprofit and we'll set up a free 20-minute call. Not sure where to start? Take the checkup first.</p>
+        <div class="row"><a class="btn ghost" href="/checkup/">Take the free checkup</a></div>
+      </div>
+      <form class="card" id="contact-form" name="contact" data-netlify="true" netlify-honeypot="bot-field" novalidate>
+        <input type="hidden" name="form-name" value="contact">
+        <label class="hp" aria-hidden="true">Leave this empty<input type="text" name="bot-field" id="bot-field" tabindex="-1" autocomplete="off"></label>
+        <div class="two">
+          <label for="c-name">Your name<input type="text" id="c-name" name="name" autocomplete="name"></label>
+          <label for="c-email">Email<input type="text" id="c-email" name="email" inputmode="email" autocomplete="email"></label>
+          <label for="c-org">Church or organization<input type="text" id="c-org" name="organization" autocomplete="organization"></label>
+          <label for="c-site">Current website (if any)<input type="text" id="c-site" name="website" inputmode="url"></label>
+        </div>
+        <label for="c-msg">What would you like help with?<textarea id="c-msg" name="message"></textarea></label>
+        <p class="msg" id="c-status" aria-live="polite"></p>
+        <div class="row"><button class="btn" type="submit" id="c-send">Request a free call</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="in">
+    <span class="logo">
+      <svg width="24" height="24" viewBox="0 0 26 26" aria-hidden="true"><path d="M2 8c5-6 12-6 17 0-5 6-12 6-17 0zM19 8l5-4M19 8l5 4" fill="none" stroke="var(--on-band)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 18c-5-6-12-6-17 0 5 6 12 6 17 0zM7 18l-5-4M7 18l-5 4" fill="var(--gold)" stroke="var(--on-band)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Two Fish Media
+    </span>
+    <span>A little goes a long way.</span>
+    <span>© <span id="yr">2026</span> Two Fish Media</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+const form = document.getElementById("contact-form");
+const status = document.getElementById("c-status");
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = document.getElementById("c-name").value.trim();
+  const email = document.getElementById("c-email").value.trim();
+  status.className = "msg err";
+  if(!name){ status.textContent = "Enter your name so we know who to reply to."; return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ status.textContent = "Enter a valid email address, like you@yourchurch.org."; return; }
+  const btn = document.getElementById("c-send");
+  btn.disabled = true; btn.textContent = "Sending…";
+  try{
+    const res = await fetch("/", {method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body:new URLSearchParams(new FormData(form)).toString()});
+    if(!res.ok) throw new Error();
+    form.reset();
+    status.className = "msg ok";
+    status.textContent = "Thanks! We'll be in touch within one business day.";
+  }catch(err){
+    status.className = "msg err";
+    status.textContent = "Your message didn't send. Please try again in a moment.";
+  }finally{
+    btn.disabled = false; btn.textContent = "Request a free call";
+  }
+});
+</script>
+
+</body>
+</html>
